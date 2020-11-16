@@ -58,34 +58,35 @@ esp_timer_create_args_t timer_periodic_arg = {
 
 void timer_periodic_cb(void *arg) //200ms中断一次
 {
-    static uint64_t timer_count = 0;  //人感
-    static uint64_t timer_count1 = 0; //照度算法
-    static uint64_t timer_count2 = 0; //串口打印
-    static uint64_t nohuman_timer_count = 0;
+    //static uint64_t timer_count = 0;  //人感
+    static uint64_t timer_count1 = 0;    //照度算法
+    static uint64_t auto_ctl_count1 = 0; //计时
+    //static uint64_t nohuman_timer_count = 0;
 
     //uint8_t key = 0;
-    timer_count++;
+    //timer_count++;
     timer_count1++;
-    timer_count2++;
-    nohuman_timer_count++;
+    //timer_count2++;
+    //nohuman_timer_count++;
     //printf("nohuman_timer_count=%lld\n", nohuman_timer_count);
 
     /////////////////////////////////
     if (timer_count1 >= 5) //1s
     {
         timer_count1 = 0;
-        if ((temp_hour == -1) || (human_status == HAVEHUMAN))
+        if (temp_hour == -1)
         {
             if (Wallkey_status == 1)
             {
                 if (wifi_connect_sta == connect_N)
                 {
                     SD25Rtc_Read(&year, &month, &day, &hour, &min, &sec);
-                    Localcalculation(lightX, color_temp, 350);
+
+                    Localcalculation(500, color_temp, 350);
                 }
                 else
                 {
-                    Localcalculation(lightX, color_temp, 350);
+                    Localcalculation(500, color_temp, 350);
                 }
             }
             else
@@ -93,28 +94,34 @@ void timer_periodic_cb(void *arg) //200ms中断一次
                 if (wifi_connect_sta == connect_N)
                 {
                     SD25Rtc_Read(&year, &month, &day, &hour, &min, &sec);
-                    Localcalculation(lightX, color_temp, 1000);
+                    Localcalculation(500, color_temp, 1000);
                 }
                 else
                 {
-                    Localcalculation(lightX, color_temp, 1000);
+                    Localcalculation(500, color_temp, 1000);
+                    //printf("运行\n");
                 }
             }
         }
-        else if (human_status == NOHUMAN)
+        else
         {
-            //Wallkey_status = 0;
-            Led_DOWN_W(100, 1000);
-            Led_DOWN_Y(100, 1000);
-            Led_UP_W(100, 1000);
-            Led_UP_Y(100, 1000);
+            Localcalculation(500, color_temp, 1000);
+            //printf("运行1\n");
         }
+        // else if (human_status == NOHUMAN)
+        // {
+        //Wallkey_status = 0;
+        //   Led_DOWN_W(100, 1000);
+        //   Led_DOWN_Y(100, 1000);
+        //   Led_UP_W(100, 1000);
+        //   Led_UP_Y(100, 1000);
+        //}
 
         Localcalculationlunchtime(year, month, day, hour, min, ob_blu_json.T2_h, ob_blu_json.T2_m, ob_blu_json.T3_h, ob_blu_json.T3_m);
+    }
+    //ESP_LOGI("wifi", "free Heap:%d,%d", esp_get_free_heap_size(), heap_caps_get_free_size(MALLOC_CAP_8BIT));
 
-        //ESP_LOGI("wifi", "free Heap:%d,%d", esp_get_free_heap_size(), heap_caps_get_free_size(MALLOC_CAP_8BIT));
-
-        /*if (mqtt_json_s.mqtt_last > 0)
+    /*if (mqtt_json_s.mqtt_last > 0)
         {
             mqtt_json_s.mqtt_last--;
         }
@@ -132,45 +139,46 @@ void timer_periodic_cb(void *arg) //200ms中断一次
                 printf("hand to auto by last time2\n");
             }
         }*/
-        auto_ctl_count1++; //无线开关指令计时
-        //printf("auto_ctl_count=%d\n", auto_ctl_count);
-        if (auto_ctl_count1 >= MAX_WALLKEY_TIME) //超时没收到平台自动控制指令,转本地计算 10min
-        {
-            auto_ctl_count1 = 0;
-            Wallkey_status = 0;
-            if (human_status == HAVEHUMAN)
-            {
-                Up_Light_Status = 1;
-                Down_Light_Status = 1;
-                temp_hour = -1;
-                //printf("human_status=%d\n", human_status);
-            }
-            else if (human_status == NOHUMAN)
-            {
-                Led_DOWN_W(100, 800);
-                Led_DOWN_Y(100, 800);
-                Led_UP_W(100, 800);
-                Led_UP_Y(100, 800);
-                Light_Status = NOLIGHT;
-                Wallkey_status = 0;
-                //printf("human_status=%d\n", human_status);
-            }
-        }
-        else if (auto_ctl_count1 < MAX_WALLKEY_TIME)
-        {
-            if (human_status == NOHUMAN)
-            {
-                Led_DOWN_W(100, 800);
-                Led_DOWN_Y(100, 800);
-                Led_UP_W(100, 800);
-                Led_UP_Y(100, 800);
-                Light_Status = NOLIGHT;
-                Wallkey_status = 0;
-                //printf("human_status=%d\n", human_status);
-            }
-        }
+    auto_ctl_count1++; //无线开关指令计时
+    //printf("auto_ctl_count=%d\n", auto_ctl_count);
+    if (auto_ctl_count1 >= MAX_WALLKEY_TIME) //超时没收到平台自动控制指令,转本地计算 10min
+    {
+        auto_ctl_count1 = 0;
+        Wallkey_status = 0;
+        //if (human_status == HAVEHUMAN)
+        // {
+        Up_Light_Status = 1;
+        Down_Light_Status = 1;
+        temp_hour = -1;
+        //printf("human_status=%d\n", human_status);
+        //}
+        //else if (human_status == NOHUMAN)
+        // {
+        //   Led_DOWN_W(100, 800);
+        //   Led_DOWN_Y(100, 800);
+        //   Led_UP_W(100, 800);
+        //   Led_UP_Y(100, 800);
+        //   Light_Status = NOLIGHT;
+        //   Wallkey_status = 0;
+        //printf("human_status=%d\n", human_status);
+        //}
     }
-    /*auto_ctl_count++; //平台指令计时
+
+    //{
+    //  if (human_status == NOHUMAN)
+    //{
+    //  Led_DOWN_W(100, 800);
+    //  Led_DOWN_Y(100, 800);
+    //  Led_UP_W(100, 800);
+    //  Led_UP_Y(100, 800);
+    //  Light_Status = NOLIGHT;
+    //  Wallkey_status = 0;
+    //printf("human_status=%d\n", human_status);
+    //}
+    //}
+}
+
+/*auto_ctl_count++; //平台指令计时
         //printf("auto_ctl_count=%d\n", auto_ctl_count);
         if (auto_ctl_count >= MAX_AUTO_CTL_TIME) //超时没收到平台自动控制指令,转本地计算 10min
         {
@@ -207,11 +215,11 @@ void timer_periodic_cb(void *arg) //200ms中断一次
             }
         }
         */
-    //}
+//}
 
-    /////////////////////////////////
+/////////////////////////////////
 
-    /*if (timer_count2 >= 25) //5s
+/*if (timer_count2 >= 25) //5s
     {
         timer_count2 = 0;
         printf("[APP] Free memory: %d bytes\n", esp_get_free_heap_size());
@@ -220,7 +228,7 @@ void timer_periodic_cb(void *arg) //200ms中断一次
         printf("Time:%d-%d-%d %d:%d:%d\r\n", year, month, day, hour, min, sec);
     }*/
 
-    if (human_status == HAVEHUMAN) //有人时，1s内右2个1则转为有人
+/* if (human_status == HAVEHUMAN) //有人时，1s内右2个1则转为有人
     {
         if (timer_count >= 10) //2s
         {
@@ -241,9 +249,9 @@ void timer_periodic_cb(void *arg) //200ms中断一次
                 havehuman_count = 0;
             }
         }
-    }
+    }*/
 
-    if (human_status == NOHUMAN) //无人时，2s内右6个1则转为有人
+/*if (human_status == NOHUMAN) //无人时，2s内右6个1则转为有人
     {
 
         if (timer_count >= 10) //2s
@@ -269,9 +277,9 @@ void timer_periodic_cb(void *arg) //200ms中断一次
                 havehuman_count = 0;
             }
         }
-    }
+    }*/
 
-    if (nohuman_timer_count >= 900) //60s 1min
+/* if (nohuman_timer_count >= 900) //60s 1min
     {
         human_status = NOHUMAN;
         nohuman_timer_count = 0;
@@ -285,8 +293,7 @@ void timer_periodic_cb(void *arg) //200ms中断一次
         //strcpy(mqtt_json_s.mqtt_light_char, "0");
         //mqtt_json_s.mqtt_human = 0;
         printf("human_status=%d\n", human_status);
-    }
-}
+    }*/
 
 /*void Led_Time_Ctl_Task(void *arg)
 {
@@ -304,7 +311,7 @@ void timer_periodic_cb(void *arg) //200ms中断一次
     //vTaskDelete(NULL);
 }*/
 
-static void opt3001_task(void *arg)
+/*static void opt3001_task(void *arg)
 {
     float lightvalue;
 
@@ -321,7 +328,7 @@ static void opt3001_task(void *arg)
         ///vTaskDelay(2000 / portTICK_RATE_MS);
     }
     vTaskDelete(NULL);
-}
+}*/
 
 static void Uart0_Task(void *arg)
 {
@@ -355,8 +362,8 @@ void app_main(void)
     //SD25RTC_IIC_Init();
     sd25rtc_init();
     Pwm_Init();
-    OPT3001_Init();
-    Human_Init();
+    //OPT3001_Init();
+    //Human_Init();
     Led_Init();
 
     Uart0_Init();
@@ -461,8 +468,8 @@ void app_main(void)
             printf("timer periodic create err code:%d\n", err);
         }
 
-        xTaskCreate(Human_Task, "Human_Task", 8192, NULL, 10, NULL);
-        xTaskCreate(&opt3001_task, "opt3001_task", 4096, NULL, 10, NULL);
+        //xTaskCreate(Human_Task, "Human_Task", 8192, NULL, 10, NULL);
+        //xTaskCreate(&opt3001_task, "opt3001_task", 4096, NULL, 10, NULL);
 
         xEventGroupWaitBits(wifi_event_group, CONNECTED_BIT,
                             false, true, portMAX_DELAY); //等待网络连接、
@@ -480,7 +487,7 @@ void app_main(void)
             printf("timer periodic create err code:%d\n", err);
         }
 
-        xTaskCreate(Human_Task, "Human_Task", 8192, NULL, 10, NULL);
-        xTaskCreate(&opt3001_task, "opt3001_task", 4096, NULL, 10, NULL);
+        //xTaskCreate(Human_Task, "Human_Task", 8192, NULL, 10, NULL);
+        //xTaskCreate(&opt3001_task, "opt3001_task", 4096, NULL, 10, NULL);
     }
 }

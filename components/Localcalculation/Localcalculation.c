@@ -68,12 +68,13 @@ void Localcalculation(float lightX, uint16_t color_temp, int fade_time)
     Z1 = Led_Color_CTL(color_temp, fade_time);
     printf("Z1=%lld\r\n", Z1);
 
-    Y1 = (15.6 * H * H - 63 * H + 76.565) * Z1;
-    Y = a * (lightX - b * Z1) + ((15.6 * H * H - 63 * H + 76.565) * Z1);
-    y = 1000 - Y; //600变到1000
+    /////// Y1 = (15.6 * H * H - 63 * H + 76.565) * Z1;
+    //////  Y = a * (lightX - b * Z1) + ((15.6 * H * H - 63 * H + 76.565) * Z1);
+    /////  y = 1000 - Y; //600变到1000
     //printf("Y=%f\r\n", Y);
 
-    Z = Z1 + y / (15.6 * H * H - 63 * H + 76.565);
+    //////////// Z = Z1 + y / (15.6 * H * H - 63 * H + 76.565);
+    Z = Z1;
     if ((Z < 0) || (Z >= 100))
     {
         Z = 0;
@@ -88,8 +89,8 @@ void Localcalculation(float lightX, uint16_t color_temp, int fade_time)
         //printf("Z=%lld\r\n", Z);
         //Led_Status = LED_STA_AUTO;
     }
-    printf("lightvalue = %f\r\n", lightX);
-    printf("Y=%f\r\n", Y);
+    //printf("lightvalue = %f\r\n", lightX);
+    //printf("Y=%f\r\n", Y);
     printf("Z=%lld\r\n", Z);
 }
 

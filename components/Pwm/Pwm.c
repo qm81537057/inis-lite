@@ -938,7 +938,7 @@ void Led_Time_Ctl(void)
             color_temp = 3500;
         }
 
-        if ((temp_hour == -1) || (human_status == HAVEHUMAN)) //开机或者开关控制，1s到达指定亮度
+        if (temp_hour == -1) //if ((temp_hour == -1) || (human_status == HAVEHUMAN)) //开机或者开关控制，1s到达指定亮度
         {
             temp_hour = hour;
             temp_min = min;
@@ -947,7 +947,7 @@ void Led_Time_Ctl(void)
             printf("灯自动运行1\r\n");
             //Led_Color_CTL(color_temp, ON_TIME);
         }
-        else if ((human_status == NOHUMAN) && (work_status != WORK_HAND))
+        /*else if ((human_status == NOHUMAN) && (work_status != WORK_HAND))
         {
 
             Led_DOWN_W(100, 800);
@@ -956,7 +956,7 @@ void Led_Time_Ctl(void)
             Led_UP_Y(100, 800);
             //Led_Status = LED_STA_NOSER;
             printf("无人\r\n");
-        }
+        }*/
         else
         {
             temp_hour = hour;
@@ -990,7 +990,7 @@ void Pwm_Init(void)
 {
     int ch;
 
-    Z1 = 0;
+    Z1 = 80;
 
     //vTaskDelay(5000 / portTICK_RATE_MS);
     temp_hour = -1;
