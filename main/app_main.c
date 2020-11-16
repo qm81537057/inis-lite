@@ -405,12 +405,9 @@ void app_main(void)
     }
 
     ble_app_init();
-    //ble_app_start();
-    //ulTaskNotifyTake(pdTRUE, -1);
-    // ble_app_start();
+
     init_wifi();
-    //Start_Active();
-    //initialise_http();
+
     start_read_blue_ret = read_bluetooth();
     if (start_read_blue_ret == 0) //未获取到蓝牙配置信息
     {
