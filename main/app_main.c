@@ -359,7 +359,6 @@ void app_main(void)
 
     Wallkey_Init();
     E2prom_Init();
-    //SD25RTC_IIC_Init();
     sd25rtc_init();
     Pwm_Init();
     //OPT3001_Init();
