@@ -990,7 +990,7 @@ void Pwm_Init(void)
 {
     int ch;
 
-    Z1 = 80;
+    Z = 80;
 
     //vTaskDelay(5000 / portTICK_RATE_MS);
     temp_hour = -1;

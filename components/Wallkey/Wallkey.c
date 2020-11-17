@@ -68,7 +68,7 @@ static void Wallkey_Read_Task(void *arg) //void Wallkey_App(uint8_t *Key_Id, int
     {
 
         key_read = Wallkey_Read(ob_blu_json.WallKeyId, ob_blu_json.Switch);
-        if ((key_read == KEY_SIN) && (Up_Light_Status == 1) && (Down_Light_Status == 1) && (human_status == HAVEHUMAN))
+        if ((key_read == KEY_SIN) && (Up_Light_Status == 1) && (Down_Light_Status == 1))
         {
             auto_ctl_count1 = 0;
             Wallkey_status = 1;
@@ -83,7 +83,7 @@ static void Wallkey_Read_Task(void *arg) //void Wallkey_App(uint8_t *Key_Id, int
             Up_Light_Status = 0;
             vTaskDelay(700 / portTICK_RATE_MS);
         }
-        else if ((key_read == KEY_SIN) && (Up_Light_Status == 0) && (Down_Light_Status == 0) && (human_status == HAVEHUMAN))
+        else if ((key_read == KEY_SIN) && (Up_Light_Status == 0) && (Down_Light_Status == 0))
         {
             auto_ctl_count1 = 0;
             Wallkey_status = 1;
@@ -96,7 +96,7 @@ static void Wallkey_Read_Task(void *arg) //void Wallkey_App(uint8_t *Key_Id, int
             vTaskDelay(700 / portTICK_RATE_MS);
             //printf("Up_Light_Status= %d\r\n", Up_Light_Status);
         }
-        else if ((key_read == KEY_SIN) && (Down_Light_Status == 0) && (Up_Light_Status == 1) && (human_status == HAVEHUMAN))
+        else if ((key_read == KEY_SIN) && (Down_Light_Status == 0) && (Up_Light_Status == 1))
         {
             auto_ctl_count1 = 0;
             Wallkey_status = 1;
@@ -113,7 +113,7 @@ static void Wallkey_Read_Task(void *arg) //void Wallkey_App(uint8_t *Key_Id, int
             printf("下亮\r\n");
             vTaskDelay(700 / portTICK_RATE_MS);
         }
-        else if ((key_read == KEY_SIN) && (Down_Light_Status == 1) && (Up_Light_Status == 0) && (human_status == HAVEHUMAN))
+        else if ((key_read == KEY_SIN) && (Down_Light_Status == 1) && (Up_Light_Status == 0))
         {
             auto_ctl_count1 = 0;
             Wallkey_status = 1;
