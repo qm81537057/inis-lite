@@ -732,30 +732,30 @@ void Led_Time_Ctl(void)
     int year, month, day, hour, min, sec;
     Rtc_Read(&year, &month, &day, &hour, &min, &sec);
 
-    if (temp_hour != hour)
-    {
+    // if (temp_hour != hour)
+    // {
 
-        if ((hour == 0) && (min < 5))
-        {
-            if (min == 1)
-            {
-                color_temp = 3400;
-            }
-            else if (min == 2)
-            {
-                color_temp = 3300;
-            }
-            else if (min == 3)
-            {
-                color_temp = 3200;
-            }
-            else if (min == 4)
-            {
-                color_temp = 3100;
-            }
-        }
+        // if ((hour == 0) && (min < 5))
+        // {
+        //     if (min == 1)
+        //     {
+        //         color_temp = 3400;
+        //     }
+        //     else if (min == 2)
+        //     {
+        //         color_temp = 3300;
+        //     }
+        //     else if (min == 3)
+        //     {
+        //         color_temp = 3200;
+        //     }
+        //     else if (min == 4)
+        //     {
+        //         color_temp = 3100;
+        //     }
+        // }
 
-        else if (((hour >= 1) && (hour <= 7)) || ((hour == 0) && (min >= 5)))
+        if ((hour >= 0) && (hour <= 7))
         {
             color_temp = 3000;
         }
@@ -908,12 +908,12 @@ void Led_Time_Ctl(void)
                 color_temp = 4100;
             }
         }
-        else if (((hour >= 17) && (hour <= 21)) || ((hour == 16) && (min >= 5)))
+        else if ((hour == 16) && (min >= 5))
         {
+
             color_temp = 4000;
-            //printf("灯自动运行2\r\n");
         }
-        else if ((hour == 22) && (min < 5))
+        else if ((hour == 17) && (min < 5))
         {
             if (min == 1)
             {
@@ -932,13 +932,36 @@ void Led_Time_Ctl(void)
                 color_temp = 3510;
             }
         }
-
-        else if (((hour > 22) && (hour <= 23)) || ((hour == 22) && (min >= 5)))
+        else if (((hour >= 18) && (hour <= 22)) || ((hour == 17) && (min >= 5)))
         {
             color_temp = 3500;
+            //printf("灯自动运行2\r\n");
+        }
+        else if ((hour == 23) && (min < 5))
+        {
+            if (min == 1)
+            {
+                color_temp = 3400;
+            }
+            else if (min == 2)
+            {
+                color_temp = 3300;
+            }
+            else if (min == 3)
+            {
+                color_temp = 3200;
+            }
+            else if (min == 4)
+            {
+                color_temp = 3100;
+            }
+        }
+        else if ((hour == 23) && (min >= 5))
+        {
+            color_temp = 3000;
         }
 
-        if (temp_hour == -1) //if ((temp_hour == -1) || (human_status == HAVEHUMAN)) //开机或者开关控制，1s到达指定亮度
+        if (temp_hour == -1)// || (human_status == HAVEHUMAN)) //开机或者开关控制，1s到达指定亮度
         {
             temp_hour = hour;
             temp_min = min;
@@ -947,28 +970,28 @@ void Led_Time_Ctl(void)
             printf("灯自动运行1\r\n");
             //Led_Color_CTL(color_temp, ON_TIME);
         }
-        /*else if ((human_status == NOHUMAN) && (work_status != WORK_HAND))
-        {
+        // else if ((human_status == NOHUMAN) && (work_status != WORK_HAND))
+        // {
 
-            Led_DOWN_W(100, 800);
-            Led_DOWN_Y(100, 800);
-            Led_UP_W(100, 800);
-            Led_UP_Y(100, 800);
-            //Led_Status = LED_STA_NOSER;
-            printf("无人\r\n");
-        }*/
+        //     Led_DOWN_W(100, 1500);
+        //     Led_DOWN_Y(100, 1500);
+        //     Led_UP_W(100, 1500);
+        //     Led_UP_Y(100, 1500);
+        //     //Led_Status = LED_STA_NOSER;
+        //     printf("无人\r\n");
+        // }
         else
         {
             temp_hour = hour;
             temp_min = min;
             //Led_Color_CTL(color_temp, ON_TIME);
-            Led_Color_CTL(color_temp, COLOR_CHANGE_TIME);
+            Led_Color_CTL(color_temp, 350);
             strcpy(mqtt_json_s.mqtt_mode, "1");
 
             printf("灯自动运行2\r\n");
         }
         //printf("color_temp2=%d\r\n", color_temp);
-    }
+    // }
 }
 void Led_Time_Ctl_Task(void *arg)
 {
@@ -981,7 +1004,7 @@ void Led_Time_Ctl_Task(void *arg)
 
             //printf("灯自动运行中\r\n");
         }
-        vTaskDelay(100 / portTICK_RATE_MS);
+        vTaskDelay(1000 / portTICK_RATE_MS);
     }
     //vTaskDelete(NULL);
 }
@@ -990,7 +1013,7 @@ void Pwm_Init(void)
 {
     int ch;
 
-    Z = 80;
+    Z = 70;
 
     //vTaskDelay(5000 / portTICK_RATE_MS);
     temp_hour = -1;

@@ -411,7 +411,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         strncpy(BleName_N, SerialNum, 5);
         //memset(BleName, 0, sizeof(BleName));
         //sprintf(BleName, "%s-%s", ProductId, BleName_N);
-        snprintf(BleName, sizeof(BleName), "%s%s", "Intlite-IT1-", BleName_N);
+        snprintf(BleName, sizeof(BleName), "%s%s", "INIS-", SerialNum);
         //if (BleName[0] >= 61)
         //{
         //  BleName[0] = BleName[0] - 32;

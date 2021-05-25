@@ -167,7 +167,7 @@ int32_t wifi_http_send(char *send_buff, uint16_t send_size, char *recv_buff, uin
 
     bzero((uint16_t *)recv_buff, recv_size);
     r = read(s, (uint16_t *)recv_buff, recv_size);
-    ESP_LOGD(TAG, "r=%d,activate recv_buf=%s\r\n", r, (char *)recv_buff);
+    ESP_LOGI(TAG, "r=%d,activate recv_buf=%s\r\n", r, (char *)recv_buff);
     close(s);
     // printf("http send end!\n");
     return r;
@@ -230,8 +230,11 @@ void http_get_task(void *pvParameters)
         {
             //RS485_Read();
             //ds18b20_get_temp();
+            if(strchr(recv_buf,'{')!=NULL)
+            {
             parse_objects_heart(strchr(recv_buf, '{'));
             http_send_mes();
+            }
         }
         else
         {
@@ -326,7 +329,10 @@ void http_send_mes(void)
     if (http_send_buff(build_po_url_json, 1024, recv_buf, 1024) > 0)
     {
         // printf("解析返回数据！\n");
+        if(strchr(recv_buf,'{')!=NULL)
+        {
         parse_objects_http_respond(strchr(recv_buf, '{'));
+        }
     }
     else
     {
