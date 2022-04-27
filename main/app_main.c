@@ -141,15 +141,15 @@ void timer_periodic_cb(void *arg) //200ms中断一次
         }*/
     auto_ctl_count1++; //无线开关指令计时
     //printf("auto_ctl_count=%d\n", auto_ctl_count);
-    if (auto_ctl_count1 >= MAX_WALLKEY_TIME) //超时没收到平台自动控制指令,转本地计算 10min
-    {
-        auto_ctl_count1 = 0;
-        Wallkey_status = 0;
-        //if (human_status == HAVEHUMAN)
-        // {
-        Up_Light_Status = 1;
-        Down_Light_Status = 1;
-        temp_hour = -1;
+    // if (auto_ctl_count1 >= MAX_WALLKEY_TIME) //超时没收到平台自动控制指令,转本地计算 10min
+    // {
+    //     auto_ctl_count1 = 0;
+    //     Wallkey_status = 0;
+    //     //if (human_status == HAVEHUMAN)
+    //     // {
+    //     Up_Light_Status = 1;
+    //     Down_Light_Status = 1;
+    //     temp_hour = -1;
         //printf("human_status=%d\n", human_status);
         //}
         //else if (human_status == NOHUMAN)
@@ -162,7 +162,7 @@ void timer_periodic_cb(void *arg) //200ms中断一次
         //   Wallkey_status = 0;
         //printf("human_status=%d\n", human_status);
         //}
-    }
+    // }
 
     //{
     //  if (human_status == NOHUMAN)

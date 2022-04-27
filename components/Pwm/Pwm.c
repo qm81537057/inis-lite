@@ -300,13 +300,13 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
             Led_DOWN_Y(duty2, fade_time);
         }
     }
-    else if (color_temp == 3510)
+    else if (color_temp == 3600)
     {
         if (Up_Light_Status == 1)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 34 / 66;
+            u = 28 / 72;
             duty1 = 100 - Z * 0.34;
             duty2 = 100 - Z * 0.66;
             printf("duty1=%d\r\n", duty1);
@@ -318,7 +318,7 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 34 / 66;
+            u = 28 / 72;
             duty1 = 100 - Z * 0.34;
             duty2 = 100 - Z * 0.66;
             printf("duty1=%d\r\n", duty1);
@@ -327,13 +327,13 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
             Led_DOWN_Y(duty2, fade_time);
         }
     }
-    else if (color_temp == 3520)
+    else if (color_temp == 3700)
     {
         if (Up_Light_Status == 1)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 35 / 65;
+            u = 32 / 68;
             duty1 = 100 - Z * 0.35;
             duty2 = 100 - Z * 0.65;
             printf("duty1=%d\r\n", duty1);
@@ -345,7 +345,7 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 35 / 65;
+            u = 32 / 68;
             duty1 = 100 - Z * 0.35;
             duty2 = 100 - Z * 0.65;
             printf("duty1=%d\r\n", duty1);
@@ -354,13 +354,13 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
             Led_DOWN_Y(duty2, fade_time);
         }
     }
-    else if (color_temp == 3530)
+    else if (color_temp == 3800)
     {
         if (Up_Light_Status == 1)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 40 / 60;
+            u = 35 / 65;
             duty1 = 100 - Z * 0.40;
             duty2 = 100 - Z * 0.60;
             printf("duty1=%d\r\n", duty1);
@@ -372,7 +372,7 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 40 / 60;
+            u = 35 / 65;
             duty1 = 100 - Z * 0.40;
             duty2 = 100 - Z * 0.60;
             printf("duty1=%d\r\n", duty1);
@@ -381,13 +381,13 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
             Led_DOWN_Y(duty2, fade_time);
         }
     }
-    else if (color_temp == 3540)
+    else if (color_temp == 3900)
     {
         if (Up_Light_Status == 1)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 42 / 58;
+            u = 40 / 60;
             duty1 = 100 - Z * 0.42;
             duty2 = 100 - Z * 0.58;
             printf("duty1=%d\r\n", duty1);
@@ -399,7 +399,7 @@ uint64_t Led_Color_CTL(uint16_t color_temp, int fade_time)
         {
             uint16_t duty1;
             uint16_t duty2;
-            u = 42 / 58;
+            u = 40 / 60;
             duty1 = 100 - Z * 0.42;
             duty2 = 100 - Z * 0.58;
             printf("duty1=%d\r\n", duty1);
@@ -755,11 +755,11 @@ void Led_Time_Ctl(void)
         //     }
         // }
 
-        if ((hour >= 0) && (hour <= 7))
+        if ((hour >= 0) && (hour <= 5))
         {
             color_temp = 3000;
         }
-        else if ((hour == 8) && (min < 5))
+        else if ((hour == 6) && (min < 5))
         {
             if (min == 1)
             {
@@ -778,36 +778,36 @@ void Led_Time_Ctl(void)
                 color_temp = 3400;
             }
         }
-        else if ((hour == 8) && (min >= 5))
+        else if ((hour == 7) || (hour == 6) && (min >= 5))
         {
             color_temp = 3500;
         }
 
-        else if ((hour == 9) && (min < 5))
+        else if ((hour == 8) && (min < 5))
         {
             if (min == 1)
             {
-                color_temp = 3510;
+                color_temp = 3600;
             }
             else if (min == 2)
             {
-                color_temp = 3520;
+                color_temp = 3700;
             }
             else if (min == 3)
             {
-                color_temp = 3530;
+                color_temp = 3800;
             }
             else if (min == 4)
             {
-                color_temp = 3540;
+                color_temp = 3900;
             }
         }
-        else if ((hour == 9) && (min >= 5))
+        else if ((hour == 8) && (min >= 5))
         {
             color_temp = 4000;
         }
 
-        else if ((hour == 10) && (min < 5))
+        else if ((hour == 9) && (min < 5))
         {
             if (min == 1)
             {
@@ -826,7 +826,7 @@ void Led_Time_Ctl(void)
                 color_temp = 4400;
             }
         }
-        else if ((hour == 10) && (min >= 5))
+        else if ((hour == 10) || (hour == 9) && (min >= 5))
         {
             color_temp = 4500;
         }
@@ -884,11 +884,70 @@ void Led_Time_Ctl(void)
             }
         }
 
-        else if (((hour > 14) && (hour <= 15)) || ((hour == 14) && (min >= 5)))
+        else if ((hour == 15) || ((hour == 14) && (min >= 5)))
         {
 
             color_temp = 4500;
         }
+
+// else if (hour == 16)
+//         {
+            
+//             if (min <= 30)
+//             {
+//                 color_temp = 4400;
+//             }
+//             else if (min == 31)
+//             {
+//                 color_temp = 4300;
+//             }
+//             else if (min == 32)
+//             {
+//                 color_temp = 4200;
+//             }
+//             else if (min == 33)
+//             {
+//                 color_temp = 4100;
+//             }
+//             else if (min == 34)
+//             {
+//                 color_temp = 4000;
+//             }
+//             else if (min == 35)
+//             {
+//                 color_temp = 3540;
+//             }
+//             else if (min == 36)
+//             {
+//                 color_temp = 3530;
+//             }
+//             else if (min == 37)
+//             {
+//                 color_temp = 3520;
+//             }
+//             else if (min == 38)
+//             {
+//                 color_temp = 3510;
+//             }
+//             else if (min == 39)
+//             {
+//                 color_temp = 3500;
+//             }
+//             else if (min == 40)
+//             {
+//                 color_temp = 3400;
+//             }
+//             else if (min == 41)
+//             {
+//                 color_temp = 3300;
+//             }
+//             else if (min == 42)
+//             {
+//                 color_temp = 3200;
+//             }
+//         }
+
+
         else if ((hour == 16) && (min < 5))
         {
             if (min == 1)
@@ -908,31 +967,31 @@ void Led_Time_Ctl(void)
                 color_temp = 4100;
             }
         }
-        else if ((hour == 16) && (min >= 5))
+        else if ((hour = 17) || (hour == 16) && (min >= 5))
         {
 
             color_temp = 4000;
         }
-        else if ((hour == 17) && (min < 5))
+        else if ((hour == 18) && (min < 5))
         {
             if (min == 1)
             {
-                color_temp = 3540;
+                color_temp = 3900;
             }
             else if (min == 2)
             {
-                color_temp = 3530;
+                color_temp = 3800;
             }
             else if (min == 3)
             {
-                color_temp = 3520;
+                color_temp = 3700;
             }
             else if (min == 4)
             {
-                color_temp = 3510;
+                color_temp = 3600;
             }
         }
-        else if (((hour >= 18) && (hour <= 22)) || ((hour == 17) && (min >= 5)))
+        else if (((hour >= 19) && (hour <= 22)) || ((hour == 18) && (min >= 5)))
         {
             color_temp = 3500;
             //printf("灯自动运行2\r\n");
@@ -1013,7 +1072,7 @@ void Pwm_Init(void)
 {
     int ch;
 
-    Z = 70;
+    Z = 80;
 
     //vTaskDelay(5000 / portTICK_RATE_MS);
     temp_hour = -1;

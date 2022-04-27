@@ -65,8 +65,8 @@ void Localcalculation(float lightX, uint16_t color_temp, int fade_time)
     }
 
     a = 3.8178 * H + 2.9131;
-    Z1 = Led_Color_CTL(color_temp, fade_time);
-    printf("Z1=%lld\r\n", Z1);
+    // Z1 = Led_Color_CTL(color_temp, fade_time);
+    // printf("Z1=%lld\r\n", Z1);
 
     /////// Y1 = (15.6 * H * H - 63 * H + 76.565) * Z1;
     //////  Y = a * (lightX - b * Z1) + ((15.6 * H * H - 63 * H + 76.565) * Z1);
@@ -74,7 +74,7 @@ void Localcalculation(float lightX, uint16_t color_temp, int fade_time)
     //printf("Y=%f\r\n", Y);
 
     //////////// Z = Z1 + y / (15.6 * H * H - 63 * H + 76.565);
-    Z = Z1;
+    //Z = Z1;
     if ((Z < 0) || (Z >= 100))
     {
         Z = 0;
@@ -94,14 +94,14 @@ void Localcalculation(float lightX, uint16_t color_temp, int fade_time)
     printf("Z=%lld\r\n", Z);
 }
 
-void Localcalculationlunchtime(int year, int month, int day, int hour, int minute, int T2_h, int T2_m, int T3_h, int T3_m)
-{
-    if (((hour * 60 + minute) >= (T2_h * 60 + T2_m)) && ((hour * 60 + minute) < (T3_h * 60 + T3_m)))
-    {
-        Led_UP_W(100, 100);
-        Led_UP_Y(100, 100);
-        Led_DOWN_W(100, 100);
-        Led_DOWN_Y(100, 100);
-        work_status = LUNCHTIME;
-    }
-}
+// void Localcalculationlunchtime(int year, int month, int day, int hour, int minute, int T2_h, int T2_m, int T3_h, int T3_m)
+// {
+//     if (((hour * 60 + minute) >= (T2_h * 60 + T2_m)) && ((hour * 60 + minute) < (T3_h * 60 + T3_m)))
+//     {
+//         Led_UP_W(100, 100);
+//         Led_UP_Y(100, 100);
+//         Led_DOWN_W(100, 100);
+//         Led_DOWN_Y(100, 100);
+//         work_status = LUNCHTIME;
+//     }
+// }
